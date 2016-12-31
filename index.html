@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Pixl</title>
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min');</script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Pixl</h1>
+      <div class="form-group">
+        <div class="input-group col-xs-12">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
+          <input type="text" class="form-control" disabled placeholder="Choose an image...">
+          <span class="input-group-btn">
+            <button onclick="renderer.chooseImage()" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group col-xs-12">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-folder-open"></i></span>
+          <input type="text" class="form-control" disabled placeholder="Choose output directory...">
+          <span class="input-group-btn">
+            <button onclick="renderer.chooseOutputDir()" class="browse btn btn-primary" type="button"><i class="glyphicon glyphicon-search"></i> Browse</button>
+          </span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">Initial number of pixels (smaller side)</span>
+          <input type="text" class="form-control" aria-label="4" value="4">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon">Number of Images</span>
+          <input type="text" class="form-control" aria-label="4" value="5">
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary btn-lg" type="button" onclick="renderer.go()"><i class="glyphicon glyphicon-play"></i> Go </button>
+      </div>
+      <div class="alert alert-success" role="alert" hidden>Success!</div>
+    </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    var renderer = require('./renderer.js')
+  </script>
+</html>

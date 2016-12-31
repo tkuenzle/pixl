@@ -1,0 +1,16 @@
+{
+  "name": "pixli",
+  "version": "0.1.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^1.4.1"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jimp": "^0.2.27",
+    "jquery": "^3.1.1"
+  }
+}
