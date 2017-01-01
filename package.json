@@ -1,9 +1,13 @@
 {
-  "name": "pixli",
+  "name": "pixl",
+  "description": "Creates image puzzles",
   "version": "0.1.0",
+  "author": "Timon Künzle",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
   "devDependencies": {
     "electron": "^1.4.1"
@@ -12,5 +16,13 @@
     "bootstrap": "^3.3.7",
     "jimp": "^0.2.27",
     "jquery": "^3.1.1"
+  },
+  "build": {
+    "appId": "com.timonibus.pixl",
+    "mac": {
+      "category": "public.app-category.entertainment"
+    },
+    "win": {
+    }
   }
 }
