@@ -4,13 +4,20 @@
   "version": "0.1.0",
   "author": "Timon Künzle",
   "main": "main.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npm/npm.git"
+  },
   "scripts": {
     "start": "electron .",
     "pack": "build --dir",
     "dist": "build"
   },
   "devDependencies": {
-    "electron": "^1.4.1"
+    "electron": "^1.4.1",
+    "jasmine": "^2.5.2",
+    "spectron": "^3.4.1"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -22,7 +29,6 @@
     "mac": {
       "category": "public.app-category.entertainment"
     },
-    "win": {
-    }
+    "win": {}
   }
 }

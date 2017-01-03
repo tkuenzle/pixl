@@ -18,7 +18,10 @@ function pixelateImage(image, pixelsize, path, callback) {
 
 function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
   Jimp.read(imagepath, function(err, image) {
-    if (err) throw err;
+    if (err) {
+      callback(err);
+      return;
+    }
     var initPixelSize = calcPixelSize(image, numberPixel, numberImages);
     image.crop(0,0,parseInt(image.bitmap.width/initPixelSize)*initPixelSize, parseInt(image.bitmap.height/initPixelSize)*initPixelSize);
     console.log(initPixelSize)
@@ -30,7 +33,7 @@ function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
       pixelateImage(image.clone(), pixelSize, outputbase+"_"+i+parsedInputPath.ext, function () {
         counter--;
         if (counter==0) {
-          callback();
+          callback(0);
         }
       });
     }
