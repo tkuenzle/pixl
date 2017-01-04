@@ -12,6 +12,7 @@ function pixelateImage(image, pixelsize, path, callback) {
       }
     }
     image.write(path);
+    console.log(path);
     callback();
   });
 }
