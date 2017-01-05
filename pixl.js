@@ -1,5 +1,6 @@
 var Jimp = require("jimp");
 var path = require("path")
+var fs = require("fs");
 
 function pixelateImage(image, pixelsize, path, callback) {
   var width = image.bitmap.width;
@@ -11,34 +12,61 @@ function pixelateImage(image, pixelsize, path, callback) {
         image.composite(new Jimp(pixelsize, pixelsize, small.getPixelColor(x,y)), x*pixelsize, y*pixelsize);
       }
     }
-    image.write(path);
-    console.log(path);
-    callback();
+    image.write(path, callback);
   });
 }
 
 function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
-  Jimp.read(imagepath, function(err, image) {
+  fs.stat(outputdir, function (err, stats) {
     if (err) {
+      if (err.code == 'ENOENT') {
+        err.message = 'The output directory "' + '" does not exist.';
+        err.name = 'MissingOutputDir'
+      }
       callback(err);
       return;
     }
-    var initPixelSize = calcPixelSize(image, numberPixel, numberImages);
-    image.crop(0,0,parseInt(image.bitmap.width/initPixelSize)*initPixelSize, parseInt(image.bitmap.height/initPixelSize)*initPixelSize);
-    console.log(initPixelSize)
-    var parsedInputPath = path.parse(imagepath);
-    var outputbase = path.join(outputdir, parsedInputPath.name);
-    var counter = numberImages;
-    for (var i=0; i<numberImages; i++) {
-      var pixelSize = initPixelSize/Math.pow(2,i);
-      pixelateImage(image.clone(), pixelSize, outputbase+"_"+i+parsedInputPath.ext, function () {
-        counter--;
-        if (counter==0) {
-          callback(0);
-        }
-      });
+    if (!stats.isDirectory()) {
+      err = new Error('The output directory "' + '" is not a directory.');
+      err.name = 'OutputDirND';
+      callback(err);
+      return;
     }
+    Jimp.read(imagepath, function(err, image) {
+      if (err) {
+        if (err.code == 'ENOENT') {
+          err.message = 'The image at "' + err.path + '" does not exist.';
+          err.name = 'MissingInputImage'
+        }
+        callback(err);
+        return;
+      }
+      var initPixelSize = calcPixelSize(image, numberPixel, numberImages);
+      image.crop(0,0,parseInt(image.bitmap.width/initPixelSize)*initPixelSize, parseInt(image.bitmap.height/initPixelSize)*initPixelSize);
+      console.log(initPixelSize)
+      var parsedInputPath = path.parse(imagepath);
+      var outputbase = path.join(outputdir, parsedInputPath.name);
+      var counter = numberImages;
+      for (var i=0; i<numberImages; i++) {
+        var pixelSize = initPixelSize/Math.pow(2,i);
+        pixelateImage(image.clone(), pixelSize, outputbase+"_"+i+parsedInputPath.ext, function (err) {
+          counter--;
+          if (err) {
+            if (err.code == 'ENOENT') {
+              err.message = 'The image at "' + err.path + '" could not be written.';
+              err.name = 'FailOutputImage'
+            }
+            callback(err);
+            return;
+          }
+          if (counter==0) {
+            callback();
+          }
+        });
+      }
+    });
   });
+
 }
 
 function calcPixelSize(image, numberPixel, numberImages) {
