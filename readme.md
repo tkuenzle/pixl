@@ -1,4 +1,4 @@
-# pixl
+# pixl [![Build Status](https://travis-ci.org/timonibus/pixl.svg?branch=master)](https://travis-ci.org/timonibus/pixl)
 
 This repository features an electron based app for creating image puzzles.
 
