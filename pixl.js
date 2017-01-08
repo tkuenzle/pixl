@@ -41,6 +41,12 @@ function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
         callback(err);
         return;
       }
+      if (numberPixel<=0) {
+        err = new Error('The initial number of Pixels must be at least one.')
+        err.name = 'NumberImagesNonPositive';
+        callback(err);
+        return;
+      }
       var initPixelSize = calcPixelSize(image, numberPixel, numberImages);
       image.crop(0,0,parseInt(image.bitmap.width/initPixelSize)*initPixelSize, parseInt(image.bitmap.height/initPixelSize)*initPixelSize);
       console.log(initPixelSize)
