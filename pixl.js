@@ -43,7 +43,7 @@ function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
       }
       if (numberPixel<=0) {
         err = new Error('The initial number of Pixels must be at least one.')
-        err.name = 'NumberImagesNonPositive';
+        err.name = 'NumberPixelsNonPositive';
         callback(err);
         return;
       }
@@ -53,6 +53,12 @@ function goPixelate(imagepath, outputdir, numberPixel, numberImages, callback) {
       var parsedInputPath = path.parse(imagepath);
       var outputbase = path.join(outputdir, parsedInputPath.name);
       var counter = numberImages;
+      if (numberImages<=0) {
+        err = new Error('The number of images must be at least one.')
+        err.name = 'NumberImagesNonPositive';
+        callback(err);
+        return;
+      }
       for (var i=0; i<numberImages; i++) {
         var pixelSize = initPixelSize/Math.pow(2,i);
         pixelateImage(image.clone(), pixelSize, outputbase+"_"+i+parsedInputPath.ext, function (err) {
